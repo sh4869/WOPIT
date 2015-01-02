@@ -6,5 +6,6 @@
     <string name="take_button">Take!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_docomo_oauth">DocomoOauthActivity</string>
+    <string name="title_activity_take_photo">TakePhotoActivity</string>
 
 </resources>

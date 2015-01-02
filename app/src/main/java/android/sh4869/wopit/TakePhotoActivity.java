@@ -1,27 +1,34 @@
 package android.sh4869.wopit;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 
-public class MainActivity extends Activity {
 
+public class TakePhotoActivity extends Activity {
+    private static final int REQUEST_IMAGE_CAPTURE = 0;
+    protected ImageView imgView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_take_photo);
+
+        Intent intent = new Intent();
+        intent.setAction("android.media.action.IMAGE_CAPTURE");
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_take_photo, menu);
         return true;
     }
 
@@ -39,12 +46,15 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void take_start(View view){
-        Log.v("BUTTON","push take button");
-         Intent  takeIntent = new Intent(this,TakePhotoActivity.class);
-        startActivity(takeIntent);
-
-    }
-
+    @Override
+     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            try {
+                Bitmap img = (Bitmap)data.getExtras().get("data");
+                imgView.setImageBitmap(img);
+             } catch (Exception e) {
+                Log.v("ERROR","error:can't take photo");
+             }
+          }
+      }
 }
